@@ -8,20 +8,27 @@ export default function Page() {
 
   useEffect(() => {
     const loadPersonas = async () => {
-      const { data } = await supabase.from("personas").select("*")
-      if (data) setPersonas(data)
+      const { data, error } = await supabase
+        .from("personas")
+        .select("*")
+
+      if (error) {
+        console.error(error)
+      } else {
+        setPersonas(data || [])
+      }
     }
 
     loadPersonas()
   }, [])
 
   return (
-    <div style={{
-      background:"#000",
-      minHeight:"100vh",
-      color:"#e8e0d0",
-      fontFamily:"sans-serif",
-      padding:"40px"
+    <main style={{
+      background: "#000",
+      minHeight: "100vh",
+      padding: "40px",
+      color: "#e8e0d0",
+      fontFamily: "sans-serif"
     }}>
       <h1>AURA</h1>
       <p>A Blaq House Entertainment Company</p>
@@ -34,6 +41,6 @@ export default function Page() {
           {p.persona_type} — {p.city}
         </div>
       ))}
-    </div>
+    </main>
   )
 }
