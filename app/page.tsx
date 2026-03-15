@@ -1,17 +1,24 @@
-"use client"
+import { createClient } from "@/lib/supabase/client"
 
-export default function Page() {
+export default async function Page() {
+
+  const supabase = createClient()
+
+  const { data } = await supabase
+    .from("personas")
+    .select("*")
+
   return (
-    <main style={{padding:40}}>
-      <h1>AURA</h1>
-      <p>A Blaq House Entertainment Company</p>
+    <main>
+      <h1>AURA Creators</h1>
 
-      <h2>Creators</h2>
-
-      <div>
-        <strong>Lana Blaze</strong><br/>
-        Glamour Influencer — Miami
-      </div>
+      {data?.map((p) => (
+        <div key={p.id}>
+          <h2>{p.name}</h2>
+          <p>{p.persona_type}</p>
+          <p>{p.city}, {p.country}</p>
+        </div>
+      ))}
     </main>
   )
 }
